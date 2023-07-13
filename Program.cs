@@ -16,35 +16,38 @@ namespace Бой_с_босом
             int bossDamage = 100;
             int hardStrike = 100;
             int tripleStrike = 150;
-            int counterattack = 75;
-            int respite = 200;
-            int berserk = 200;
+            int counterAttack = 75;
+            int retreatPlayer = 200;
+            int berserkState = 200;
 
             int bossAttackCounter = 0;
 
-            int conditionUseBerserk = 5;
+            int reloadingBerserk = 5;
+            int referencePoint = 1;
 
             string applicationHardStrike = "1";
             string applicationTripleStrike = "2";
             string applicationCounterattack = "3";
             string applicationRespite = "4";
 
-            string player = "Игрок";
-            string boss = "Босс";
+            string namePlayer;
+            string nameBoss = "Босс";
 
             string userInput;
 
             bool isTripleStrikeAvaliable = false;
             bool isRespiteAvaliable = false;
 
-            Console.WriteLine($"{player} дошел до босса, чтобы победить {player} должен использовать конбинации ударов.");
+            Console.WriteLine("Введите имя игрока:");
+            namePlayer = Console.ReadLine();
+            Console.WriteLine($"{namePlayer} дошел до босса, чтобы победить {namePlayer} должен использовать конбинации ударов.");
             Console.WriteLine($"Сильный удара - бросается на врага и наносит {hardStrike} урона.");
             Console.WriteLine($"Тройной удар - в мгновение ока обрушиват на противника три молниеносных удара нанося врагу" +
                 $" {tripleStrike} урона.(Может быть применен только после Сильного удара)");
-            Console.WriteLine($"Контратака - блакирует урон врага и наносит {counterattack} урона.");
-            Console.WriteLine($"Отступление - отступает от врага не получив урона и вастанавливает себе {respite} здоровья." +
+            Console.WriteLine($"Контратака - блакирует урон врага и наносит {counterAttack} урона.");
+            Console.WriteLine($"Отступление - отступает от врага не получив урона и вастанавливает себе {retreatPlayer} здоровья." +
                 $"(Может быть применен только после Контратаки)");
-            Console.WriteLine($"{boss} после пяти атак вподает в состояние берсерка и наносит {bossDamage + berserk} урона.");
+            Console.WriteLine($"{nameBoss} после пяти атак вподает в состояние берсерка и наносит {berserkState} урона.");
 
             while (playerHealth > 0 && bossHealth > 0)
             {
@@ -52,9 +55,9 @@ namespace Бой_с_босом
                 Console.WriteLine($"{applicationHardStrike}:Сильный удара - бросается на врага и наносит {hardStrike} урона.");
                 Console.WriteLine($"{applicationTripleStrike}:Тройной удар - в мгновение ока обрушиват на противника три" +
                 $" молниеносных удара нанося врагу {tripleStrike} урона.(Может быть применен только после Сильного удара)");
-                Console.WriteLine($"{applicationCounterattack}:Контратака - блакирует урон врага и наносит {counterattack} урона.");
+                Console.WriteLine($"{applicationCounterattack}:Контратака - блакирует урон врага и наносит {counterAttack} урона.");
                 Console.WriteLine($"{applicationRespite}:Отступление - отступает от врага не получив урона и вастанавливает себе" +
-                $" {respite} здоровья.(Может быть применен только после Контратаки)");
+                $" {retreatPlayer} здоровья.(Может быть применен только после Контратаки)");
                 userInput = Console.ReadLine();
 
                 if (userInput == applicationHardStrike)
@@ -66,9 +69,9 @@ namespace Бой_с_босом
                     isTripleStrikeAvaliable = true;
                     bossAttackCounter++;
 
-                    if (bossAttackCounter >= conditionUseBerserk - 1)
+                    if (bossAttackCounter >= reloadingBerserk - referencePoint)
                     {
-                        playerHealth -= berserk;
+                        playerHealth -= berserkState;
                         Console.WriteLine($"{bossHealth} - здоровье босса.");
                         Console.WriteLine(playerHealth + " - здоровье игрока.");
                     }
@@ -91,7 +94,7 @@ namespace Бой_с_босом
                 }
                 else if (userInput == applicationCounterattack)
                 {
-                    bossHealth -= counterattack;
+                    bossHealth -= counterAttack;
                     Console.WriteLine(bossHealth + " - здоровье босса.");
                     Console.WriteLine(playerHealth + " - здоровье игрока.");
                     isRespiteAvaliable = true;
@@ -101,7 +104,7 @@ namespace Бой_с_босом
                     if (isRespiteAvaliable == true)
                     {
                         Console.WriteLine(bossHealth + " - здоровье босса.");
-                        playerHealth += respite;
+                        playerHealth += retreatPlayer;
                         Console.WriteLine(playerHealth + " - здоровье игрока.");
                     }
                     else
